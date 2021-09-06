@@ -1,5 +1,6 @@
 package br.com.alura.forum.controller
 
+import br.com.alura.forum.dto.AtualizacaoTopicoForm
 import br.com.alura.forum.dto.NovoTopicoForm
 import br.com.alura.forum.dto.TopicoView
 import br.com.alura.forum.service.TopicoService
@@ -23,7 +24,12 @@ class TopicoController(
     }
 
     @PostMapping
-    fun cadastrar(@RequestBody @Valid topico: NovoTopicoForm) {
-        topicoService.cadastrar(topico)
+    fun cadastrar(@RequestBody @Valid form: NovoTopicoForm) {
+        topicoService.cadastrar(form)
+    }
+
+    @PutMapping
+    fun atualizar(@RequestBody @Valid form: AtualizacaoTopicoForm) {
+        topicoService.atualizar(form)
     }
 }
