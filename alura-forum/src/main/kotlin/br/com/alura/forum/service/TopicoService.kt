@@ -52,16 +52,29 @@ class TopicoService(
         }
     }
 
-    fun cadastrar(form: NovoTopicoForm) {
-        topicos.add(
-            novoTopicoFormMapper.toTopico(topicos.size.toLong(), form)
-        )
+    fun cadastrar(form: NovoTopicoForm): TopicoView {
+        return with(topicos) {
+            this.add(
+                novoTopicoFormMapper.toTopico(topicos.size.toLong(), form)
+            )
+
+            this.last().toTopicoView()
+        }
     }
 
-    fun atualizar(form: AtualizacaoTopicoForm) {
+    fun atualizar(form: AtualizacaoTopicoForm): TopicoView {
         val topico = topicos.first { it.id == form.id }
+        val updatedTopic = topico.copy(id = form.id, titulo = form.titulo, mensagem = form.mensagem)
 
-        topicos.remove(topico)
-        topicos.add(topico.copy(id = form.id, titulo = form.titulo, mensagem = form.mensagem))
+        topicos.apply {
+            this.remove(topico)
+            this.add(updatedTopic)
+        }
+
+        return updatedTopic.toTopicoView()
+    }
+
+    fun deletar(id: Long) {
+        topicos.removeIf { it.id == id }
     }
 }
